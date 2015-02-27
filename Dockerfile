@@ -34,6 +34,7 @@ RUN touch /etc/php5/mods-available/zmq.ini
 RUN echo "extension=zmq.so" >> /etc/php5/mods-available/zmq.ini
 RUN php5enmod zmq
 
+#Fix pathing issues with fcgi
 RUN echo "cgi.fix_pathinfo = 0;" >> /etc/php5/fpm/php.ini
 
 ADD www.conf /etc/php5/fpm/pool.d/www.conf
@@ -41,3 +42,6 @@ ADD www.conf /etc/php5/fpm/pool.d/www.conf
 #Configure permissions
 RUN mkdir -p /home/app && chown -R www-data:www-data /home/app
 
+#Install composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
+RUN mv /usr/local/bin/composer.phar /usr/local/bin/composer
